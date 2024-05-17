@@ -147,10 +147,8 @@ class ConfigData {
       defaultGlobalState: defaultGlobalState ?? this.defaultGlobalState,
       getPages: getPages ?? this.getPages,
       unknownRoute: unknownRoute ?? this.unknownRoute,
-      routeInformationProvider:
-          routeInformationProvider ?? this.routeInformationProvider,
-      routeInformationParser:
-          routeInformationParser ?? this.routeInformationParser,
+      routeInformationProvider: routeInformationProvider ?? this.routeInformationProvider,
+      routeInformationParser: routeInformationParser ?? this.routeInformationParser,
       routerDelegate: routerDelegate ?? this.routerDelegate,
       backButtonDispatcher: backButtonDispatcher ?? this.backButtonDispatcher,
       navigatorObservers: navigatorObservers ?? this.navigatorObservers,
@@ -170,14 +168,10 @@ class ConfigData {
       themeMode: themeMode ?? this.themeMode,
       defaultPopGesture: defaultPopGesture ?? this.defaultPopGesture,
       defaultOpaqueRoute: defaultOpaqueRoute ?? this.defaultOpaqueRoute,
-      defaultTransitionDuration:
-          defaultTransitionDuration ?? this.defaultTransitionDuration,
-      defaultTransitionCurve:
-          defaultTransitionCurve ?? this.defaultTransitionCurve,
-      defaultDialogTransitionCurve:
-          defaultDialogTransitionCurve ?? this.defaultDialogTransitionCurve,
-      defaultDialogTransitionDuration: defaultDialogTransitionDuration ??
-          this.defaultDialogTransitionDuration,
+      defaultTransitionDuration: defaultTransitionDuration ?? this.defaultTransitionDuration,
+      defaultTransitionCurve: defaultTransitionCurve ?? this.defaultTransitionCurve,
+      defaultDialogTransitionCurve: defaultDialogTransitionCurve ?? this.defaultDialogTransitionCurve,
+      defaultDialogTransitionDuration: defaultDialogTransitionDuration ?? this.defaultDialogTransitionDuration,
       routing: routing ?? this.routing,
       parameters: parameters ?? this.parameters,
     );
@@ -225,8 +219,7 @@ class ConfigData {
         other.defaultTransitionDuration == defaultTransitionDuration &&
         other.defaultTransitionCurve == defaultTransitionCurve &&
         other.defaultDialogTransitionCurve == defaultDialogTransitionCurve &&
-        other.defaultDialogTransitionDuration ==
-            defaultDialogTransitionDuration &&
+        other.defaultDialogTransitionDuration == defaultDialogTransitionDuration &&
         other.routing == routing &&
         mapEquals(other.parameters, parameters);
   }
@@ -356,9 +349,9 @@ class GetRootState extends State<GetRoot> with WidgetsBindingObserver {
   }
 
   void onInit() {
-    if (config.getPages == null && config.home == null) {
-      throw 'You need add pages or home';
-    }
+    // if (config.getPages == null && config.home == null) {
+    //   throw 'You need add pages or home';
+    // }
 
     if (config.routerDelegate == null) {
       final newDelegate = GetDelegate.createDelegate(
@@ -372,27 +365,19 @@ class GetRootState extends State<GetRoot> with WidgetsBindingObserver {
         notFoundRoute: config.unknownRoute,
         navigatorKey: config.navigatorKey,
         navigatorObservers: (config.navigatorObservers == null
-            ? <NavigatorObserver>[
-                GetObserver(config.routingCallback, Get.routing)
-              ]
-            : <NavigatorObserver>[
-                GetObserver(config.routingCallback, config.routing),
-                ...config.navigatorObservers!
-              ]),
+            ? <NavigatorObserver>[GetObserver(config.routingCallback, Get.routing)]
+            : <NavigatorObserver>[GetObserver(config.routingCallback, config.routing), ...config.navigatorObservers!]),
       );
       config = config.copyWith(routerDelegate: newDelegate);
     }
 
     if (config.routeInformationParser == null) {
-      final newRouteInformationParser =
-          GetInformationParser.createInformationParser(
-        initialRoute: config.initialRoute ??
-            config.getPages?.first.name ??
-            cleanRouteName("/${config.home.runtimeType}"),
+      final newRouteInformationParser = GetInformationParser.createInformationParser(
+        initialRoute:
+            config.initialRoute ?? config.getPages?.first.name ?? cleanRouteName("/${config.home.runtimeType}"),
       );
 
-      config =
-          config.copyWith(routeInformationParser: newRouteInformationParser);
+      config = config.copyWith(routeInformationParser: newRouteInformationParser);
     }
 
     if (config.locale != null) Get.locale = config.locale;
@@ -441,8 +426,7 @@ class GetRootState extends State<GetRoot> with WidgetsBindingObserver {
 
   Transition? getThemeTransition() {
     final platform = context.theme.platform;
-    final matchingTransition =
-        Get.theme.pageTransitionsTheme.builders[platform];
+    final matchingTransition = Get.theme.pageTransitionsTheme.builders[platform];
     switch (matchingTransition) {
       case CupertinoPageTransitionsBuilder():
         return Transition.cupertino;
@@ -501,8 +485,7 @@ class GetRootState extends State<GetRoot> with WidgetsBindingObserver {
 
   GetDelegate get rootDelegate => config.routerDelegate as GetDelegate;
 
-  RouteInformationParser<Object> get informationParser =>
-      config.routeInformationParser!;
+  RouteInformationParser<Object> get informationParser => config.routeInformationParser!;
 
   GlobalKey<NavigatorState>? addKey(GlobalKey<NavigatorState> newKey) {
     rootDelegate.navigatorKey = newKey;
